@@ -32,6 +32,8 @@ Console.WriteLine($"Enter {AddNumbers.maxAllowedNumbers} numbers you want to add
 
 try
 {
+    AddNumbers addNumbers = new AddNumbers();
+
     for (int inputCount = 0; inputCount < AddNumbers.maxAllowedNumbers; inputCount++)
     {
         userInput = Console.ReadLine();
@@ -45,8 +47,9 @@ try
             appendStringBuilder(emptyUserInput, inputCount, numbers);
         }
     }
+    Console.WriteLine(numbers);
     separationLine();
-    Console.WriteLine("The total is: " + AddNumbers.Add(numbers.ToString()));
+    Console.WriteLine("The total is: " + addNumbers.Add(numbers.ToString()));
 }
 catch (Exception ex)
 {
