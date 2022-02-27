@@ -1,6 +1,6 @@
 ﻿namespace LinkedLists.classes
 {
-    class LinkedList
+    public class LinkedList
     {
         /* Constructor
          * - LinkedList() - initializes the private fields
@@ -24,7 +24,7 @@
          * - Get(int index): gets item at specified index
          */
 
-        private Node headNode;
+        private Node? headNode;
         private int length;
 
         // Constructor
@@ -39,7 +39,7 @@
             get { return length == 0; }
         }
 
-        public int Count
+        public int Length
         {
             get { return length; }
         }
@@ -69,12 +69,17 @@
             return o;
         }
 
-        public object Add(object o)
+        public object AddToEnd(object o)
         {
             return Add(length, o);
         }
 
-        public object Remove(int index)
+        public object AddToFront(object o)
+        {
+            return Add(0, o);
+        }
+
+        public object? Remove(int index)
         {
             if (index < 0)
                 throw new ArgumentOutOfRangeException("Index: " + index);
@@ -86,7 +91,7 @@
                 index -= length;
 
             Node current = headNode;
-            object result = null;
+            object result;
 
             if (index == 0)
             {
@@ -155,10 +160,14 @@
         public void PrintList()
         {
             Node looper = headNode;
+            int position = 0;
+
+            Console.WriteLine("Position\tValue");
             while (looper != null)
             {
-                Console.WriteLine(looper.NodeData);
+                Console.WriteLine(position + "\t\t" + looper.NodeData);
                 looper = looper.NextNode;
+                position++;
             }
         }
     }

@@ -7,20 +7,34 @@ namespace StringCalculatorTests
     public class StringTest
     {
         [TestMethod]
-        public void Add_ContainsNegativeValues_ThrowException()
+        public void ContainsNegativeValues_StringContainsNegativeValues_NegativeArrayContainsValue()
         {
             // Arrange
-            /* initialize objects */
-            var negativeValues = new AddNumbers();
-            string negativeTestString = "-6, 3, -8";
+            string[] numbers = { "-3, 3, 6" };
+            AddNumbers addNumbers = new AddNumbers();
+
 
             // Act
-            /* act on created object */
-            var result = AddNumbers.Add(negativeTestString);
-            result.contains
+            for (int number = 0; number < numbers.Length; number++)
+                addNumbers.CheckNumberValue(number, numbers);
 
             // Assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(addNumbers.ContainsNegativeNumbers());
+        }
+
+        [TestMethod]
+        public void Add_GetTotal_ReturnedTotalMatch()
+        {
+            // Arrange
+            string numbers = "3,3,6";
+            AddNumbers addNumbers = new AddNumbers();
+            int testTotal = 12;
+
+            // Act
+            var result = addNumbers.Add(numbers);
+
+            // Assert
+            Assert.AreEqual(testTotal, result);
         }
     }
 }

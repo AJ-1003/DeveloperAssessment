@@ -10,17 +10,64 @@ namespace StringCalculator
 
         public static RegexStringValidator stringValidator = new RegexStringValidator(regexInputString);
 
-        public static void numberNegativeOutput(int val)
+        // Integers
+        int total = 0;
+        int intNumber;
+        int numberOfNegativeValues = 0;
+
+        int[] negativeNumbers = new int[0];
+
+        public bool ContainsNegativeNumbers()
+        {
+            return negativeNumbers.Length > 0;
+        }
+
+        public void CheckNumberValue(int number, string[] numbersString)
+        {
+            string negativeNumberPattern = @"\-*\d+";
+
+            int negativeNumberValue;
+
+            Match negativeMatch = Regex.Match(numbersString[number], negativeNumberPattern);
+            // Negative code block
+            if (Int32.Parse(negativeMatch.Value) < 0)
+            {
+                negativeNumberValue = Int32.Parse(negativeMatch.Value);
+                numberOfNegativeValues++;
+                Array.Resize(ref negativeNumbers, numberOfNegativeValues);
+                negativeNumbers[numberOfNegativeValues - 1] = negativeNumberValue;
+                //containsNegatives = true;
+                // Test outputs
+                //Console.WriteLine("Negative number value: " + negativeNumberValue);
+                //Console.WriteLine("Negative numbers array length: " + negativeNumbers.Length);
+                //Console.WriteLine("Negative number values: " + numberOfNegativeValues);
+                //Console.WriteLine("Lenght of negative array: " + negativeNumbers.Length);
+            }
+            else
+            {
+                intNumber = Int32.Parse(numbersString[number]);
+                if (intNumber > 1000)
+                {
+                    intNumber = 0;
+                }
+                else
+                {
+                    total += intNumber;
+                }
+            }
+            //return containsNegatives;
+        }
+
+        public static void negativeNumberOutput(int val)
         {
             Console.WriteLine("=> {0:d}", val);
         }
 
-        public static int Add(string numbers)
+        public int Add(string numbers)
         {
 
             // Stings
             string regexString = @"[\\\,\;\:_\*\^\%\$\#\/\|\&\=\.\s\n]+";
-            string negativeNumberPattern = @"\-*\d+";
             string replacement = ",";
 
             // Regex
@@ -30,51 +77,10 @@ namespace StringCalculator
             string inputNumbers = numbers.TrimStart().TrimEnd();
             string outputNumbers = regexOutputString.Replace(inputNumbers, replacement);
 
-            // Integers
-            int total = 0;
-            int intNumber;
-            int negativeNumberValue;
-            int numberOfNegativeValues = 0;
-
             // Arrays
             string[] numbersString = outputNumbers.Split(',');
-            int[] negativeNumbers = new int[0];
 
-            Action<int> action = new Action<int>(numberNegativeOutput);
-
-            bool ContainsNegativeValues(int number)
-            {
-                bool containsNegatives = false;
-
-                Match negativeMatch = Regex.Match(numbersString[number], negativeNumberPattern);
-                // Negative code block
-                if (Int32.Parse(negativeMatch.Value) < 0)
-                {
-                    negativeNumberValue = Int32.Parse(negativeMatch.Value);
-                    numberOfNegativeValues++;
-                    Array.Resize(ref negativeNumbers, numberOfNegativeValues);
-                    negativeNumbers[numberOfNegativeValues - 1] = negativeNumberValue;
-                    containsNegatives = true;
-                    // Test outputs
-                    //Console.WriteLine("Negative number value: " + negativeNumberValue);
-                    //Console.WriteLine("Negative numbers array length: " + negativeNumbers.Length);
-                    //Console.WriteLine("Negative number values: " + numberOfNegativeValues);
-                    //Console.WriteLine("Lenght of negative array: " + negativeNumbers.Length);
-                }
-                else
-                {
-                    intNumber = Int32.Parse(numbersString[number]);
-                    if (intNumber > 1000)
-                    {
-                        intNumber = 0;
-                    }
-                    else
-                    {
-                        total += intNumber;
-                    }
-                }
-                return containsNegatives;
-            }
+            Action<int> action = new Action<int>(negativeNumberOutput);
 
             // Test outputs
             //Console.WriteLine("Array length: " + numbersString.Length);
@@ -85,28 +91,26 @@ namespace StringCalculator
                 if (numbers != "" && numbersString.Length > 0)
                 {
                     for (int number = 0; number < maxAllowedNumbers; number++)
-                    {
-                        ContainsNegativeValues(number);
-                    }
-
-                    if (negativeNumbers.Length > 0)
-                    {
-                        throw new NegativeNumberException($"The following negatives are not allowed:");
-                    }
+                        CheckNumberValue(number, numbersString);
                 }
                 else
                 {
                     total = 0;
                 }
+
+                // Test outputs
+                //Console.WriteLine("Negative numbers: " + negativeNumbers.Length);
+
+                if (negativeNumbers.Length > 0)
+                    throw new NegativeNumberException($"The following negatives are not allowed:");
             }
             catch (NegativeNumberException ex)
             {
                 Console.WriteLine(ex.Message);
                 Array.ForEach(negativeNumbers, action);
                 for (int i = 0; i < 40; i++)
-                {
                     Console.Write("=");
-                }
+
                 Console.WriteLine();
             }
             catch (Exception ex)
