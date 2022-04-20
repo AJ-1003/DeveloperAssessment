@@ -3,15 +3,12 @@ using System.Text;
 
 //int inputCount = 0;
 StringBuilder numbers = new();
-string userInput;
+string? userInput;
 string emptyUserInput = "0";
 
 static void separationLine()
 {
-    for (int i = 0; i < 40; i++)
-    {
-        Console.Write("=");
-    }
+    Console.Write("========================================");
     Console.WriteLine();
 }
 
@@ -38,7 +35,7 @@ try
     {
         userInput = Console.ReadLine();
 
-        if (userInput != "")
+        if (!string.IsNullOrWhiteSpace(userInput))
         {
             appendStringBuilder(userInput, inputCount, numbers);
         }

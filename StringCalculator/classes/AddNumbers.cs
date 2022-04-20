@@ -82,24 +82,17 @@ namespace StringCalculator
 
             Action<int> action = new Action<int>(negativeNumberOutput);
 
-            // Test outputs
-            //Console.WriteLine("Array length: " + numbersString.Length);
-            //Console.WriteLine("All input numbers: " + outputNumbers);
-
             try
             {
                 if (numbers != "" && numbersString.Length > 0)
                 {
-                    for (int number = 0; number < maxAllowedNumbers; number++)
+                    for (int number = 0; number < numbersString.Length; number++)
                         CheckNumberValue(number, numbersString);
                 }
                 else
                 {
                     total = 0;
                 }
-
-                // Test outputs
-                //Console.WriteLine("Negative numbers: " + negativeNumbers.Length);
 
                 if (negativeNumbers.Length > 0)
                     throw new NegativeNumberException($"The following negatives are not allowed:");
